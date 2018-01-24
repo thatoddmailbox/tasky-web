@@ -7,6 +7,7 @@ import { h, Component } from "preact";
 
 import mhs from "mhs.js";
 
+import AddTodo from "todo/AddTodo.jsx";
 import TodoList from "todo/TodoList.jsx";
 
 export default class App extends Component {
@@ -73,6 +74,10 @@ export default class App extends Component {
 		});
 	}
 
+	reloadList() {
+		this.selectList(this.state.selectedList);
+	}
+
 	render(props, state) {
 		if (!state.loggedIn) {
 			return <div class="app container">
@@ -91,7 +96,11 @@ export default class App extends Component {
 			<h3>To-do</h3>
 			{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
-			{!state.loadingList && state.selectedList && <TodoList listInfo={state.selectedList} list={state.selectedListData} />}
+			
+			{!state.loadingList && state.selectedList && <div>
+				<TodoList listInfo={state.selectedList} list={state.selectedListData} />
+				<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
+			</div>}
 		</div>;
 	}
 };
