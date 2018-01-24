@@ -6,12 +6,15 @@ var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var path = require('path');
 
+var defines = require("./defines");
+
 var plugins = [
 	new ExtractTextPlugin("bundle.css"),
 	new HtmlWebpackPlugin({
 		title: "Tasky",
 		hash: true
-	})
+	}),
+	new webpack.DefinePlugin(defines),
 ];
 
 if (process.env.NODE_ENV == "production") {

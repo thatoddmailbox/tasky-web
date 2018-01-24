@@ -1,4 +1,5 @@
 node_modules/
 dist/
 
+defines.js
 npm-debug.log
