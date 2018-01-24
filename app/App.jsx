@@ -98,7 +98,7 @@ export default class App extends Component {
 			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
 			
 			{!state.loadingList && state.selectedList && <div>
-				<TodoList listInfo={state.selectedList} list={state.selectedListData} />
+				<TodoList token={state.token} listInfo={state.selectedList} list={state.selectedListData} />
 				<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
 			</div>}
 		</div>;

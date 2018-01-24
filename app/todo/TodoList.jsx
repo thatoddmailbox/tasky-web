@@ -8,7 +8,7 @@ export default class TodoList extends Component {
 	render(props, state) {
 		return <div>
 			{props.list.map(function(item) {
-				return <TodoItem item={item} />;
+				return <TodoItem token={props.token} item={item} />;
 			})}
 		</div>;
 	}
