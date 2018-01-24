@@ -7,6 +7,8 @@ import { h, Component } from "preact";
 
 import mhs from "mhs.js";
 
+import TodoList from "todo/TodoList.jsx";
+
 export default class App extends Component {
 	componentWillMount() {
 		var that = this;
@@ -57,9 +59,17 @@ export default class App extends Component {
 	}
 
 	selectList(classObject) {
-		that.setState({
+		var that = this;
+		this.setState({
 			loadingList: true,
 			selectedList: classObject
+		}, function() {
+			mhs.get(that.state.token, "homework/getForClass/" + classObject.id, {}, function(data) {
+				that.setState({
+					loadingList: false,
+					selectedListData: data.homework
+				});
+			});
 		});
 	}
 
@@ -81,6 +91,7 @@ export default class App extends Component {
 			<h3>To-do</h3>
 			{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
+			{!state.loadingList && state.selectedList && <TodoList listInfo={state.selectedList} list={state.selectedListData} />}
 		</div>;
 	}
 };
