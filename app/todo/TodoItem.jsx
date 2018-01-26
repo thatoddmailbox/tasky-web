@@ -25,6 +25,7 @@ export default class TodoItem extends Component {
 			if (changes["complete"]) {
 				changes["complete"] = (changes["complete"] == "1");
 			}
+			changes["ignoreView"] = true;
 			that.setState(changes, callback);
 		});
 	}
@@ -38,6 +39,10 @@ export default class TodoItem extends Component {
 	}
 
 	render(props, state) {
+		if (props.view == "uncompleted" && state.complete && !state.ignoreView) {
+			return;
+		}
+
 		return <div class={`todoItem ${state.complete ? "complete" : ""}`}>
 			<div class="form-check">
 				<label class="form-check-label">

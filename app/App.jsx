@@ -10,8 +10,16 @@ import mhs from "mhs.js";
 import AddTodo from "todo/AddTodo.jsx";
 import ListSelector from "todo/ListSelector.jsx";
 import TodoList from "todo/TodoList.jsx";
+import ViewSelector from "todo/ViewSelector.jsx";
 
 export default class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			view: "uncompleted"
+		};
+	}
+
 	componentWillMount() {
 		var that = this;
 
@@ -91,6 +99,12 @@ export default class App extends Component {
 		this.selectList(this.state.selectedList);
 	}
 
+	selectView(view) {
+		this.setState({
+			view: view
+		});
+	}
+
 	render(props, state) {
 		if (!state.loggedIn) {
 			return <div class="app container">
@@ -106,12 +120,16 @@ export default class App extends Component {
 		}
 
 		return <div class="app container">
-			<h3>To-do <ListSelector token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} /></h3>
+			<h3>
+				To-do 
+				<ListSelector token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} />
+			</h3>
 			{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
 			
 			{!state.loadingList && state.selectedList && <div>
-				<TodoList token={state.token} listInfo={state.selectedList} list={state.selectedListData} />
+				<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
+				<TodoList token={state.token} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
 				<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
 			</div>}
 		</div>;
