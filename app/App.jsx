@@ -7,6 +7,8 @@ import { h, Component } from "preact";
 
 import mhs from "mhs.js";
 
+import AccountInfo from "account/AccountInfo.jsx";
+
 import AddTodo from "todo/AddTodo.jsx";
 import ListSelector from "todo/ListSelector.jsx";
 import TodoList from "todo/TodoList.jsx";
@@ -49,6 +51,11 @@ export default class App extends Component {
 				loggedIn: false
 			});
 		}
+	}
+
+	logout() {
+		localStorage.removeItem("mhsToken");
+		window.location.reload();
 	}
 
 	getLists() {
@@ -120,6 +127,10 @@ export default class App extends Component {
 		}
 
 		return <div class="app container">
+			<div class="pull-right">
+				<AccountInfo user={state.user} logout={this.logout.bind(this)} />
+			</div>
+
 			<h3>
 				To-do 
 				<ListSelector token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} />
