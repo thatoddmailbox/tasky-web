@@ -1,18 +1,17 @@
 import "todo/TodoItem.styl";
 
 import { h, Component } from "preact";
+import linkState from "linkstate";
 
 import mhs from "mhs.js";
 
 export default class TodoItem extends Component {
-	componentWillMount() {
-		this.componentWillReceiveProps(this.props, {});
-	}
-
 	componentWillReceiveProps(nextProps, nextState) {
-		this.setState({
-			complete: (nextProps.item.complete == "1")
-		});
+		if (this.props && this.props.view != nextProps.view) {
+			this.setState({
+				ignoreView: null
+			});
+		}
 	}
 
 	update(changes, callback) {
@@ -22,10 +21,8 @@ export default class TodoItem extends Component {
 			updated[change] = changes[change];
 		}
 		mhs.post(this.props.token, "homework/edit", updated, function(data) {
-			if (changes["complete"]) {
-				changes["complete"] = (changes["complete"] == "1");
-			}
 			changes["ignoreView"] = true;
+			that.props.updateListData(changes);
 			that.setState(changes, callback);
 		});
 	}
@@ -38,16 +35,66 @@ export default class TodoItem extends Component {
 		});
 	}
 
+	edit() {
+		this.setState({
+			edit: true,
+			editName: this.props.item.name
+		});
+	}
+
+	keyup(e) {
+		if (e.keyCode == 13) {
+			this.saveEdit();
+		}
+	}
+
+	saveEdit() {
+		this.update({
+			name: this.state.editName
+		}, function() {
+			this.setState({
+				edit: false
+			});
+		});
+	}
+
+	cancelEdit() {
+		this.setState({
+			edit: false
+		});
+	}
+
 	render(props, state) {
-		if (props.view == "uncompleted" && state.complete && !state.ignoreView) {
+		var complete = (props.item.complete == "1");
+
+		if (props.view == "uncompleted" && complete && !state.ignoreView) {
 			return;
 		}
 
-		return <div class={`todoItem ${state.complete ? "complete" : ""}`}>
+		if (state.edit) {
+			return <div class={`todoItem edit ${complete ? "complete" : ""}`}>
+				<div class="form-check">
+					<input type="checkbox" class="form-check-input" checked={complete} disabled />
+					<div class="todoItemEditContainer">
+						<input type="text" class="form-control todoItemEditName" onKeyUp={this.keyup.bind(this)} onChange={linkState(this, "editName")} value={state.editName} />
+						<div class="todoItemActions">
+							<i class="fa fa-check" onClick={this.saveEdit.bind(this)} />
+							<i class="fa fa-times" onClick={this.cancelEdit.bind(this)} />
+						</div>
+					</div>
+				</div>
+			</div>;
+		}
+
+		return <div class={`todoItem ${complete ? "complete" : ""}`}>
 			<div class="form-check">
 				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input" checked={state.complete} onChange={this.onCompleteChange.bind(this)} /> {props.item.name}
+					<input type="checkbox" class="form-check-input" checked={complete} onChange={this.onCompleteChange.bind(this)} />
+					{props.item.name}
 				</label>
+				<div class="todoItemActions">
+					<i class="fa fa-pencil" onClick={this.edit.bind(this)} />
+				</div>
 			</div>
 		</div>;
 	}

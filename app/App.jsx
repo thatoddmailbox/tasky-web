@@ -112,6 +112,18 @@ export default class App extends Component {
 		});
 	}
 
+	updateListData(id, changes) {
+		for (var i = 0; i < this.state.selectedListData.length; i++) {
+			var item = this.state.selectedListData[i];
+			if (item.id == id) {
+				for (var updateKey in changes) {
+					item[updateKey] = changes[updateKey];
+				}
+				break;
+			}
+		}
+	}
+
 	render(props, state) {
 		if (!state.loggedIn) {
 			return <div class="app container">
@@ -140,7 +152,7 @@ export default class App extends Component {
 			
 			{!state.loadingList && state.selectedList && <div>
 				<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
-				<TodoList token={state.token} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
+				<TodoList token={state.token} updateListData={this.updateListData.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
 				<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
 			</div>}
 		</div>;
