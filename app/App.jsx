@@ -8,6 +8,7 @@ import { h, Component } from "preact";
 import mhs from "mhs.js";
 
 import AddTodo from "todo/AddTodo.jsx";
+import ListSelector from "todo/ListSelector.jsx";
 import TodoList from "todo/TodoList.jsx";
 
 export default class App extends Component {
@@ -28,27 +29,10 @@ export default class App extends Component {
 				token: localStorage.mhsToken
 			}, function() {
 				mhs.get(that.state.token, "auth/me", {}, function(userData) {
-					mhs.get(that.state.token, "classes/get", {}, function(classesData) {
-						var todoLists = [];
-
-						classesData.classes.forEach(function(classObject) {
-							var matches = classObject.name.match(/To-do \((.*)\)/i);
-							if (matches) {
-								classObject.listName = matches[1];
-								todoLists.push(classObject);
-							}
-						});
-
-						that.setState({
-							loading: false,
-							user: userData.user,
-							classes: classesData.classes,
-							todoLists: todoLists
-						}, function() {
-							if (todoLists.length > 0) {
-								that.selectList.call(that, todoLists[0]);
-							}
-						});
+					that.setState({
+						user: userData.user
+					}, function() {
+						that.getLists.call(that);
 					});
 				});
 			});
@@ -57,6 +41,35 @@ export default class App extends Component {
 				loggedIn: false
 			});
 		}
+	}
+
+	getLists() {
+		var that = this;
+		this.setState({
+			loading: true
+		}, function() {
+			mhs.get(that.state.token, "classes/get", {}, function(classesData) {
+				var todoLists = [];
+	
+				classesData.classes.forEach(function(classObject) {
+					var matches = classObject.name.match(/To-do \((.*)\)/i);
+					if (matches) {
+						classObject.listName = matches[1];
+						todoLists.push(classObject);
+					}
+				});
+	
+				that.setState({
+					loading: false,
+					classes: classesData.classes,
+					todoLists: todoLists
+				}, function() {
+					if (todoLists.length > 0) {
+						that.selectList.call(that, todoLists[0]);
+					}
+				});
+			});
+		});
 	}
 
 	selectList(classObject) {
@@ -93,7 +106,7 @@ export default class App extends Component {
 		}
 
 		return <div class="app container">
-			<h3>To-do</h3>
+			<h3>To-do <ListSelector token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} /></h3>
 			{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
 			
