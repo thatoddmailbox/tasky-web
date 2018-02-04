@@ -145,7 +145,7 @@ export default class App extends Component {
 
 			<h3>
 				To-do 
-				<ListSelector token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} />
+				<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} />
 			</h3>
 			{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
