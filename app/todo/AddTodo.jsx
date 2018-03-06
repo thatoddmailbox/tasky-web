@@ -13,7 +13,6 @@ export default class AddTodo extends Component {
 			this.setState({
 				loading: true
 			}, function() {
-				console.log(this.state.todoText);
 				mhs.post(this.props.token, "homework/add", {
 					name: this.state.todoText,
 					due: moment().format("YYYY-MM-DD"),
