@@ -6,6 +6,10 @@ var getToken = function() {
 	return unescape(window.location.href.match("\\?token=(.*?)(&|$)") ? window.location.href.match("\\?token=(.*?)(&|$)")[1] : "");
 };
 
+if (window.location.protocol == "http:" && window.location.host == "tasky.studerfamily.us") {
+	window.location.protocol = "https:";
+}
+
 var token = getToken();
 
 window.onload = function() {
