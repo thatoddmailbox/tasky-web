@@ -11,6 +11,7 @@ import AccountInfo from "account/AccountInfo.jsx";
 
 import AddTodo from "todo/AddTodo.jsx";
 import ListSelector from "todo/ListSelector.jsx";
+import ProgressDisplay from "todo/ProgressDisplay.jsx";
 import TodoList from "todo/TodoList.jsx";
 import ViewSelector from "todo/ViewSelector.jsx";
 
@@ -122,6 +123,9 @@ export default class App extends Component {
 				break;
 			}
 		}
+		this.setState({
+			selectedListData: this.state.selectedListData
+		});
 	}
 
 	render(props, state) {
@@ -154,6 +158,7 @@ export default class App extends Component {
 				<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
 				<TodoList token={state.token} updateListData={this.updateListData.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
 				<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
+				<ProgressDisplay list={state.selectedListData} view={state.view} />
 			</div>}
 		</div>;
 	}
