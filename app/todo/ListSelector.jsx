@@ -39,6 +39,9 @@ export default class ListSelector extends Component {
 			<button class="btn btn-outline-dark btn-sm" onClick={this.newList.bind(this)}>
 				<i class="fa fa-plus" /> new list
 			</button>
+			<button class="btn btn-outline-dark btn-sm" onClick={props.openManager}>
+				<i class="fa fa-cogs" /> manage lists
+			</button>
 		</div>;
 	}
 };

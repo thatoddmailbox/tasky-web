@@ -9,6 +9,8 @@ import mhs from "mhs.js";
 
 import AccountInfo from "account/AccountInfo.jsx";
 
+import ListManager from "manager/ListManager.jsx";
+
 import AddTodo from "todo/AddTodo.jsx";
 import ListSelector from "todo/ListSelector.jsx";
 import ProgressDisplay from "todo/ProgressDisplay.jsx";
@@ -16,10 +18,11 @@ import TodoList from "todo/TodoList.jsx";
 import ViewSelector from "todo/ViewSelector.jsx";
 
 export default class App extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			view: "uncompleted"
+			view: "uncompleted",
+			page: "todo"
 		};
 	}
 
@@ -128,6 +131,18 @@ export default class App extends Component {
 		});
 	}
 
+	openManager() {
+		this.setState({
+			page: "manager"
+		});
+	}
+
+	openTodo() {
+		this.setState({
+			page: "todo"
+		});
+	}
+
 	render(props, state) {
 		if (!state.loggedIn) {
 			return <div class="app container">
@@ -142,24 +157,42 @@ export default class App extends Component {
 			</div>;
 		}
 
+		var displayContents;
+		if (state.page == "todo") {
+			displayContents = <div>
+				<h3>
+					To-do 
+					<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} openManager={this.openManager.bind(this)} />
+				</h3>
+				{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
+				{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
+				
+				{!state.loadingList && state.selectedList && <div>
+					<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
+					<TodoList token={state.token} updateListData={this.updateListData.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
+					<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
+					<ProgressDisplay list={state.selectedListData} view={state.view} />
+				</div>}
+			</div>;
+		} else {
+			displayContents = <div>
+				<h3 class="managerHeader">
+					<button class="btn btn-outline-dark btn-sm" onClick={this.openTodo.bind(this)}>
+						<i class="fa fa-arrow-left" /> go back
+					</button>
+					Manage lists
+				</h3>
+
+				<ListManager token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
+			</div>;
+		}
+
 		return <div class="app container">
 			<div class="pull-right">
 				<AccountInfo user={state.user} logout={this.logout.bind(this)} />
 			</div>
 
-			<h3>
-				To-do 
-				<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} />
-			</h3>
-			{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
-			{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
-			
-			{!state.loadingList && state.selectedList && <div>
-				<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
-				<TodoList token={state.token} updateListData={this.updateListData.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
-				<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
-				<ProgressDisplay list={state.selectedListData} view={state.view} />
-			</div>}
+			{displayContents}
 		</div>;
 	}
 };
