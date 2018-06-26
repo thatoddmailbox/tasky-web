@@ -13,8 +13,25 @@ export default class ListManagerList extends Component {
 	}
 
 	toggleArchived(list) {
+		var that = this;
 		this.setState({
 			loading: true
+		}, function() {
+			var newName = "";
+			if (list.archived) {
+				list.archived = false;
+				newName = "To-do (" + list.listName + ")";
+			} else {
+				list.archived = true;
+				newName = "To-do (archived, " + list.listName + ")";
+			}
+			mhs.post(that.props.token, "classes/edit", {
+				id: list.id,
+				color: "40ccff",
+				name: newName
+			}, function(data) {
+				that.props.getLists();
+			});
 		});
 	}
 
@@ -23,8 +40,8 @@ export default class ListManagerList extends Component {
 		return <div class={`listManagerList row ${list.archived ? "archived" : ""}`}>
 			<div class="col listManagerListName">{list.listName}</div>
 			<div class="col listManagerActions">
-				<button class="btn btn-sm btn-secondary" onClick={this.toggleArchived.bind(this, list)}>
-					<i class="fa fa-archive" /> {list.archived ? "unarchive" : "archive"}
+				<button class="btn btn-sm btn-secondary" onClick={this.toggleArchived.bind(this, list)} disabled={!!state.loading}>
+					{state.loading ? "loading..." : <span><i class="fa fa-archive" /> {list.archived ? "unarchive" : "archive"}</span>}
 				</button>
 			</div>
 		</div>;

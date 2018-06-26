@@ -73,7 +73,14 @@ export default class App extends Component {
 				classesData.classes.forEach(function(classObject) {
 					var matches = classObject.name.match(/To-do \((.*)\)/i);
 					if (matches) {
-						classObject.listName = matches[1];
+						var listName = matches[1];
+						var archived = false;
+						if (listName.indexOf("archived, ") == 0) {
+							listName = listName.substring(listName.indexOf(",") + 2);
+							archived = true;
+						}
+						classObject.listName = listName;
+						classObject.archived = archived;
 						todoLists.push(classObject);
 					}
 				});

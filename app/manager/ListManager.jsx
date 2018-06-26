@@ -10,7 +10,7 @@ export default class ListManager extends Component {
 	render(props, state) {
 		return <div class="listManager">
 			{props.lists.map(function(list) {
-				return <ListManagerList list={list} />;
+				return <ListManagerList token={props.token} list={list} getLists={props.getLists} />;
 			})}
 		</div>;
 	}

@@ -32,7 +32,9 @@ export default class ListSelector extends Component {
 	render(props, state) {
 		return <div class="listSelector">
 			<select value={props.listInfo && props.listInfo.id} onChange={this.selectList.bind(this)}>
-				{props.lists.map(function(list) {
+				{props.lists.filter(function(list) {
+					return !list.archived;	
+				}).map(function(list) {
 					return <option value={list.id}>{list.listName}</option>;
 				})}
 			</select>
