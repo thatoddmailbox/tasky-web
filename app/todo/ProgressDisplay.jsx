@@ -11,11 +11,14 @@ export default class ProgressDisplay extends Component {
 			}
 		});
 		var percentage = Math.round((completeCount / props.list.length) * 100);
+		if (isNaN(percentage)) {
+			return <div class="progressDisplay"></div>;
+		}
 		return <div class="progressDisplay">
 			<div class="progress">
 				<div class="progress-bar" role="progressbar" style={`width: ${percentage}%`} />
 			</div>
-			{percentage}% complete
+			{percentage}% complete ({completeCount}/{props.list.length})
 		</div>;
 	}
 };
