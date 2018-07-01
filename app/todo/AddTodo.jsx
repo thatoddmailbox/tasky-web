@@ -7,9 +7,14 @@ import moment from "moment";
 import mhs from "mhs.js";
 
 export default class AddTodo extends Component {
-	addTodo() {
+	addTodo(e) {
 		var that = this;
 		if (this.state.todoPrompt) {
+			if (!this.state.todoText || this.state.todoText.trim() == "") {
+				// no text was entered, just cancel it
+				this.cancelTodo(e);
+				return true;
+			}
 			this.setState({
 				loading: true
 			}, function() {
@@ -34,9 +39,17 @@ export default class AddTodo extends Component {
 		}
 	}
 
+	cancelTodo(e) {
+		this.setState({
+			todoPrompt: false
+		});
+		e.stopPropagation();
+		return true;
+	}
+
 	keyup(e) {
 		if (e.keyCode == 13) {
-			this.addTodo();
+			this.addTodo(e);
 		}
 	}
 
@@ -44,7 +57,8 @@ export default class AddTodo extends Component {
 		return <div>
 			{!state.todoPrompt && <div class="addTodo" onClick={this.addTodo.bind(this)}>+ add to-do</div>}
 			{state.todoPrompt && <div class="addTodoPrompt">
-				<input type="text" disabled={!!this.state.loading} placeholder="Enter a task..." class="form-control addTodoPrompt" onChange={linkState(this, "todoText")} onKeyup={this.keyup.bind(this)} />	
+				<input type="text" disabled={!!this.state.loading} placeholder="Enter a task..." class="form-control addTodoPrompt" onChange={linkState(this, "todoText")} onKeyup={this.keyup.bind(this)} />
+				<button class="btn btn-secondary" disabled={!!this.state.loading} onClick={this.cancelTodo.bind(this)}><i class="fa fa-times" /></button>
 				<button class="btn btn-primary" disabled={!!this.state.loading} onClick={this.addTodo.bind(this)}>+ add</button>
 			</div>}
 		</div>;
