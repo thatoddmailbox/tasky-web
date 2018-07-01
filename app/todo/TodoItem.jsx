@@ -64,6 +64,17 @@ export default class TodoItem extends Component {
 		});
 	}
 
+	deleteItem() {
+		var that = this;
+		if (confirm("Are you sure?")) {
+			mhs.post(this.props.token, "homework/delete", {
+				id: this.props.item.id
+			}, function(data) {
+				that.props.reloadList();
+			});
+		}
+	}
+
 	render(props, state) {
 		var complete = (props.item.complete == "1");
 
@@ -80,6 +91,7 @@ export default class TodoItem extends Component {
 						<div class="todoItemActions">
 							<i class="fa fa-check" onClick={this.saveEdit.bind(this)} />
 							<i class="fa fa-times" onClick={this.cancelEdit.bind(this)} />
+							<i class="fa fa-trash" onClick={this.deleteItem.bind(this)} />
 						</div>
 					</div>
 				</div>

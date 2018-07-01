@@ -13,7 +13,7 @@ export default class TodoList extends Component {
 		var that = this;
 		return <div>
 			{props.list.map(function(item) {
-				return <TodoItem token={props.token} updateListData={that.updateListData.bind(that, item)} view={props.view} item={item} />;
+				return <TodoItem token={props.token} updateListData={that.updateListData.bind(that, item)} reloadList={props.reloadList} view={props.view} item={item} />;
 			})}
 		</div>;
 	}

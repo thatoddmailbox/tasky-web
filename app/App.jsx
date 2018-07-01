@@ -176,7 +176,7 @@ export default class App extends Component {
 				
 				{!state.loadingList && state.selectedList && <div>
 					<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
-					<TodoList token={state.token} updateListData={this.updateListData.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
+					<TodoList token={state.token} updateListData={this.updateListData.bind(this)} reloadList={this.reloadList.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
 					<AddTodo token={state.token} listInfo={state.selectedList} reloadList={this.reloadList.bind(this)} />
 					<ProgressDisplay list={state.selectedListData} view={state.view} />
 				</div>}
