@@ -159,18 +159,23 @@ export default class App extends Component {
 			</div>;
 		}
 		if (state.loading) {
-			return <div class="app container">
-				<h3><i class="fa fa-spin fa-refresh" /> Getting your to-do lists, please wait...</h3>
+			return <div class="app">
+				<div class="headerContainer">
+					<div class="container">
+						<h3><i class="fa fa-spin fa-refresh" /> Getting your to-do lists, please wait...</h3>
+					</div>
+				</div>
 			</div>;
 		}
 
-		var displayContents;
+		var headerContents;
+		var bodyContents;
 		if (state.page == "todo") {
-			displayContents = <div>
-				<h3>
-					To-do 
-					<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} openManager={this.openManager.bind(this)} />
-				</h3>
+			headerContents = <div class="pageHeader todoHeader">
+				<span class="headerTitle">To-do</span>
+				<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} openManager={this.openManager.bind(this)} />
+			</div>;
+			bodyContents = <div>
 				{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 				{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
 				
@@ -182,24 +187,36 @@ export default class App extends Component {
 				</div>}
 			</div>;
 		} else {
-			displayContents = <div>
-				<h3 class="managerHeader">
+			headerContents = <div>
+				<div class="pageHeader managerHeader">
 					<button class="btn btn-outline-dark btn-sm" onClick={this.openTodo.bind(this)}>
 						<i class="fa fa-arrow-left" /> go back
 					</button>
-					Manage lists
-				</h3>
-
+					<span class="headerTitle">Manage lists</span>
+				</div>
+			</div>;
+			bodyContents = <div>
 				<ListManager token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
 			</div>;
 		}
 
-		return <div class="app container">
-			<div class="pull-right">
-				<AccountInfo user={state.user} logout={this.logout.bind(this)} />
+		return <div class="app">
+			<div class="headerContainer">
+				<div class="container">
+					<div class="row headerRow">
+						<div class="col-md-7">
+							{headerContents}
+						</div>
+						<div class="col-md-5">
+							<AccountInfo user={state.user} logout={this.logout.bind(this)} />
+						</div>
+					</div>
+				</div>
 			</div>
 
-			{displayContents}
+			<div class="container">
+				{bodyContents}
+			</div>
 		</div>;
 	}
 };
