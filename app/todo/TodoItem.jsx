@@ -102,7 +102,7 @@ export default class TodoItem extends Component {
 			<div class="form-check">
 				<label class="form-check-label">
 					<input type="checkbox" class="form-check-input" checked={complete} onChange={this.onCompleteChange.bind(this)} />
-					{props.item.name}
+					<span class="todoItemName">{props.item.name}</span>
 				</label>
 				<div class="todoItemActions">
 					<i class="fa fa-pencil" onClick={this.edit.bind(this)} />
