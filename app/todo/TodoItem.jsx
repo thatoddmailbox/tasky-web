@@ -89,9 +89,9 @@ export default class TodoItem extends Component {
 					<div class="todoItemEditContainer">
 						<input type="text" class="form-control todoItemEditName" onKeyUp={this.keyup.bind(this)} onChange={linkState(this, "editName")} value={state.editName} />
 						<div class="todoItemActions">
-							<i class="fa fa-check" onClick={this.saveEdit.bind(this)} />
-							<i class="fa fa-times" onClick={this.cancelEdit.bind(this)} />
-							<i class="fa fa-trash" onClick={this.deleteItem.bind(this)} />
+							<i class="fa fa-fw fa-check" onClick={this.saveEdit.bind(this)} />
+							<i class="fa fa-fw fa-times" onClick={this.cancelEdit.bind(this)} />
+							<i class="fa fa-fw fa-trash" onClick={this.deleteItem.bind(this)} />
 						</div>
 					</div>
 				</div>

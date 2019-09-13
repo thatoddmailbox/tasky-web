@@ -9,6 +9,8 @@ import mhs from "mhs.js";
 
 import AccountInfo from "account/AccountInfo.jsx";
 
+import Exporter from "exporter/Exporter.jsx";
+
 import ListManager from "manager/ListManager.jsx";
 
 import AddTodo from "todo/AddTodo.jsx";
@@ -138,6 +140,12 @@ export default class App extends Component {
 		});
 	}
 
+	openExporter() {
+		this.setState({
+			page: "exporter"
+		});
+	}
+
 	openManager() {
 		this.setState({
 			page: "manager"
@@ -173,7 +181,7 @@ export default class App extends Component {
 		if (state.page == "todo") {
 			headerContents = <div class="pageHeader todoHeader">
 				<span class="headerTitle">To-do</span>
-				<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} openManager={this.openManager.bind(this)} />
+				<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} openExporter={this.openExporter.bind(this)} openManager={this.openManager.bind(this)} />
 			</div>;
 			bodyContents = <div>
 				{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
@@ -190,14 +198,21 @@ export default class App extends Component {
 			headerContents = <div>
 				<div class="pageHeader managerHeader">
 					<button class="btn btn-outline-dark btn-sm" onClick={this.openTodo.bind(this)}>
-						<i class="fa fa-arrow-left" /> go back
+						<i class="fa fa-fw fa-arrow-left" /> go back
 					</button>
-					<span class="headerTitle">Manage lists</span>
+					{state.page == "manager" && <span class="headerTitle">Manage lists</span>}
+					{state.page == "exporter" && <span class="headerTitle">Export data</span>}
 				</div>
 			</div>;
-			bodyContents = <div>
-				<ListManager token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
-			</div>;
+			if (state.page == "manager") {
+				bodyContents = <div>
+					<ListManager token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
+				</div>;
+			} else {
+				bodyContents = <div>
+					<Exporter token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
+				</div>;
+			}
 		}
 
 		return <div class="app">

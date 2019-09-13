@@ -58,7 +58,7 @@ export default class AddTodo extends Component {
 			{!state.todoPrompt && <div class="addTodo" onClick={this.addTodo.bind(this)}>+ add to-do</div>}
 			{state.todoPrompt && <div class="addTodoPrompt">
 				<input type="text" disabled={!!this.state.loading} placeholder="Enter a task..." class="form-control addTodoPrompt" onChange={linkState(this, "todoText")} onKeyup={this.keyup.bind(this)} />
-				<button class="btn btn-secondary" disabled={!!this.state.loading} onClick={this.cancelTodo.bind(this)}><i class="fa fa-times" /></button>
+				<button class="btn btn-secondary" disabled={!!this.state.loading} onClick={this.cancelTodo.bind(this)}><i class="fa fa-fw fa-times" /></button>
 				<button class="btn btn-primary" disabled={!!this.state.loading} onClick={this.addTodo.bind(this)}>+ add</button>
 			</div>}
 		</div>;

@@ -39,10 +39,13 @@ export default class ListSelector extends Component {
 				})}
 			</select>
 			<button class="btn btn-outline-dark btn-sm" onClick={this.newList.bind(this)}>
-				<i class="fa fa-plus" /> new list
+				<i class="fa fa-fw fa-plus" /> new list
 			</button>
 			<button class="btn btn-outline-dark btn-sm" onClick={props.openManager}>
-				<i class="fa fa-cogs" /> manage lists
+				<i class="fa fa-fw fa-cogs" /> manage lists
+			</button>
+			<button class="btn btn-outline-dark btn-sm" onClick={props.openExporter}>
+				<i class="fa fa-fw fa-table" /> export data
 			</button>
 		</div>;
 	}

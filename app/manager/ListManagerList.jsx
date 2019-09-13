@@ -56,10 +56,10 @@ export default class ListManagerList extends Component {
 			<div class="col listManagerListName">{list.listName}</div>
 			<div class="col listManagerActions">
 				<button class="btn btn-sm btn-secondary" onClick={this.rename.bind(this, list)}>
-					<i class="fa fa-pencil" /> rename
+					<i class="fa fa-fw fa-pencil" /> rename
 				</button>
 				<button class="btn btn-sm btn-secondary" onClick={this.toggleArchived.bind(this, list)} disabled={!!state.loading}>
-					{state.loading ? "loading..." : <span><i class="fa fa-archive" /> {list.archived ? "unarchive" : "archive"}</span>}
+					{state.loading ? "loading..." : <span><i class="fa fa-fw fa-archive" /> {list.archived ? "unarchive" : "archive"}</span>}
 				</button>
 			</div>
 		</div>;
