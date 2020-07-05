@@ -25,16 +25,18 @@ export default class AddTodo extends Component {
 					classId: this.props.listInfo.id
 				}, function() {
 					that.setState({
-						loading: false,
-						todoPrompt: false
+						loading: false
 					}, function() {
 						that.props.reloadList.call(that);
+						that.focus();
 					});
 				});
 			});
 		} else {
 			this.setState({
 				todoPrompt: true
+			}, function() {
+				that.focus();
 			});
 		}
 	}
@@ -47,9 +49,15 @@ export default class AddTodo extends Component {
 		return true;
 	}
 
+	focus() {
+		document.querySelector(".addTodoPrompt input").focus();
+	}
+
 	keyup(e) {
 		if (e.keyCode == 13) {
 			this.addTodo(e);
+		} else if (e.keyCode == 27) {
+			this.cancelTodo(e);
 		}
 	}
 
