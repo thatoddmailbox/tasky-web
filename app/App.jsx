@@ -7,6 +7,8 @@ import { h, Component } from "preact";
 
 import mhs from "mhs.js";
 
+import PageTitle from "PageTitle.jsx";
+
 import AccountInfo from "account/AccountInfo.jsx";
 
 import Exporter from "exporter/Exporter.jsx";
@@ -161,6 +163,7 @@ export default class App extends Component {
 	render(props, state) {
 		if (!state.loggedIn) {
 			return <div class="app container">
+				<PageTitle>Log in</PageTitle>
 				<h3>Not logged in!</h3>
 				<p>Sign in with your MyHomeworkSpace account to see your tasks</p>
 				<a href={mhs.getAuthURL()} class="btn btn-primary">Connect MyHomeworkSpace account</a>
@@ -168,6 +171,7 @@ export default class App extends Component {
 		}
 		if (state.loading) {
 			return <div class="app">
+				<PageTitle>Loading...</PageTitle>
 				<div class="headerContainer">
 					<div class="container">
 						<h3><i class="fa fa-spin fa-refresh" /> Getting your to-do lists, please wait...</h3>
@@ -184,9 +188,10 @@ export default class App extends Component {
 				<ListSelector token={state.token} listInfo={state.selectedList} lists={state.todoLists} getLists={this.getLists.bind(this)} selectList={this.selectList.bind(this)} openExporter={this.openExporter.bind(this)} openManager={this.openManager.bind(this)} />
 			</div>;
 			bodyContents = <div>
+				<PageTitle>{state.selectedList ? state.selectedList.listName : "To-do"}</PageTitle>
 				{state.todoLists.length == 0 && <p>You don't have any to-do lists!</p>}
 				{state.loadingList && <p><i class="fa fa-spin fa-refresh" /> Getting to-do list, please wait...</p>}
-				
+
 				{!state.loadingList && state.selectedList && <div>
 					<ViewSelector view={state.view} selectView={this.selectView.bind(this)} />
 					<TodoList token={state.token} updateListData={this.updateListData.bind(this)} reloadList={this.reloadList.bind(this)} view={state.view} listInfo={state.selectedList} list={state.selectedListData} />
@@ -206,10 +211,12 @@ export default class App extends Component {
 			</div>;
 			if (state.page == "manager") {
 				bodyContents = <div>
+					<PageTitle>Manage lists</PageTitle>
 					<ListManager token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
 				</div>;
 			} else {
 				bodyContents = <div>
+					<PageTitle>Export data</PageTitle>
 					<Exporter token={state.token} lists={state.todoLists} getLists={this.getLists.bind(this)} />
 				</div>;
 			}
