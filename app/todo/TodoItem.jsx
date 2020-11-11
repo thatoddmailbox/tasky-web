@@ -2,6 +2,7 @@ import "todo/TodoItem.styl";
 
 import { h, Component } from "preact";
 import linkState from "linkstate";
+import moment from "moment";
 
 import mhs from "mhs.js";
 
@@ -98,6 +99,9 @@ export default class TodoItem extends Component {
 			</div>;
 		}
 
+		var dueDate = moment(this.props.item.due, "YYYY-MM-DD");
+		var dueDateDisplay = dueDate.format("dddd, MMMM Do, YYYY");
+
 		return <div class={`todoItem ${complete ? "complete" : ""}`}>
 			<div class="form-check">
 				<label class="form-check-label">
@@ -106,6 +110,9 @@ export default class TodoItem extends Component {
 				</label>
 				<div class="todoItemActions">
 					<i class="fa fa-pencil" onClick={this.edit.bind(this)} />
+					<span class="todoItemDate">
+						Added on {dueDateDisplay}
+					</span>
 				</div>
 			</div>
 		</div>;
