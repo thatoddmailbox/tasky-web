@@ -24,7 +24,7 @@ export default class ListSelector extends Component {
 				name: "To-do (" + name + ")",
 				teacher: ""
 			}, function(data) {
-				that.props.getLists();
+				that.props.getLists(true);
 			});
 		}
 	}

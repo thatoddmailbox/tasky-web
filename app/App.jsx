@@ -66,7 +66,7 @@ export default class App extends Component {
 		window.location.reload();
 	}
 
-	getLists() {
+	getLists(selectLast) {
 		var that = this;
 		this.setState({
 			loading: true
@@ -95,7 +95,8 @@ export default class App extends Component {
 					todoLists: todoLists
 				}, function() {
 					if (todoLists.length > 0) {
-						that.selectList.call(that, todoLists[0]);
+						var selectedIndex = (selectLast ? todoLists.length - 1 : 0);
+						that.selectList.call(that, todoLists[selectedIndex]);
 					}
 				});
 			});
