@@ -24,7 +24,7 @@
     "bootstrap": "^4.0.0",
     "font-awesome": "^4.7.0",
     "linkstate": "^1.1.0",
-    "moment": "^2.20.1",
+    "moment": "^2.29.4",
     "preact": "^8.2.7"
   }
 }
